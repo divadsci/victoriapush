@@ -7,47 +7,38 @@ assign global labels
 */
 package victoriapush
 
-import "context"
+type Vic struct {
+	URL          string
+	globalLabels map[string]string
+}
 
-// add URL and globalLabels to context and return
-func InitVictoria(URL string, globalLabels map[string]string) context.Context {
-	ctx := context.Background()
-	ctx = context.WithValue(ctx, "URL", URL)
-	ctx = context.WithValue(ctx, "globalLabels", globalLabels)
-
-	return ctx
+// add URL and globalLabels
+func (v *Vic) InitVictoria(URL string, globalLabels map[string]string) {
+	v.URL = URL
+	v.globalLabels = globalLabels
 }
 
 // Replace globalLabels map with a new one
-func ReplaceGlobalLabels(ctx context.Context, globalLabels map[string]string) context.Context {
-	ctx = context.WithValue(ctx, "globalLabels", globalLabels)
-	return ctx
+func (v *Vic) ReplaceGlobalLabels(globalLabels map[string]string) {
+	v.globalLabels = globalLabels
 }
 
 // Add a map of labels to globalLabels
-func AddGlobalLabels(ctx context.Context, globalLabels map[string]string) context.Context {
+func (v *Vic) AddGlobalLabels(globalLabels map[string]string) {
 
 	//get globalLabels from context, iterate over new map and add each to globalLabels from ctx
-	currGlobalLabels := ctx.Value("globalLabels").(map[string]string)
-	for label, v := range globalLabels {
-		currGlobalLabels[label] = v
+
+	for label, val := range globalLabels {
+		v.globalLabels[label] = val
 	}
 
-	//add updated globalLabels back to ctx
-	ctx = context.WithValue(ctx, "globalLabels", currGlobalLabels)
-	return ctx
 }
 
 // Remove the list of labels from the globalLabels map IF it matches
-func RemGlobalLabels(ctx context.Context, labelsForRem []string) context.Context {
+func (v *Vic) RemGlobalLabels(labelsForRem []string) {
 
 	//delete all labels in labelsForRem from globalLabels
-	currGlobalLabels := ctx.Value("globalLabels").(map[string]string)
 	for _, label := range labelsForRem {
-		delete(currGlobalLabels, label)
+		delete(v.globalLabels, label)
 	}
-
-	//add updated globalLabels back to ctx
-	ctx = context.WithValue(ctx, "globalLabels", currGlobalLabels)
-	return ctx
 }
