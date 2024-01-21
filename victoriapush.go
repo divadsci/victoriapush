@@ -143,12 +143,14 @@ func (v *Vic) pushMetrics() {
 		if err != nil {
 			//panic(err)
 			log.Println(err)
+			return
 		}
 
 		client := &http.Client{}
 		res, err := client.Do(r)
 		if err != nil {
 			log.Println(err)
+			return
 		}
 		println(res.StatusCode)
 	}
