@@ -137,6 +137,7 @@ func (v *Vic) pushMetrics() {
 			totMetrics = totMetrics + "\n" + metric
 		}
 		println(totMetrics)
+		println(v.URL)
 
 		// Create a HTTP post request
 		r, err := http.NewRequest("POST", v.URL, bytes.NewBuffer([]byte(totMetrics)))
