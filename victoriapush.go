@@ -10,6 +10,7 @@ package victoriapush
 import (
 	"bytes"
 	"fmt"
+	"log"
 	"net/http"
 	"strings"
 	"time"
@@ -138,16 +139,16 @@ func (v *Vic) pushMetrics() {
 		println(totMetrics)
 
 		// Create a HTTP post request
-		r, err := http.NewRequest("POST", v.URL+"/api/v1/import/prometheus", bytes.NewBuffer([]byte(totMetrics)))
+		r, err := http.NewRequest("POST", v.URL, bytes.NewBuffer([]byte(totMetrics)))
 		if err != nil {
 			//panic(err)
-			println("post error", err)
+			log.Println(err)
 		}
 
 		client := &http.Client{}
 		res, err := client.Do(r)
 		if err != nil {
-			panic(err)
+			log.Println(err)
 		}
 		println(res.StatusCode)
 	}
