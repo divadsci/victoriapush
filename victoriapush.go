@@ -109,9 +109,10 @@ func (v *Vic) dataPointToExpo(dataPoint DataPoint) string {
 		expoString = expoString + fmt.Sprintf("%s=\"%s\",", globalLabel, data)
 	}
 
-	//there will be an extra comma at the end. remove it pushing channel
+	//there will be an extra comma at the end, remove it
 	expoString = strings.TrimSuffix(expoString, ",")
 
+	//close off labels, add value and add millisecond timestamp
 	expoString = expoString + "} " + fmt.Sprintf("%f", dataPoint.Value) + " " + fmt.Sprintf("%d", time.Now().UnixMilli())
 	return expoString
 }
