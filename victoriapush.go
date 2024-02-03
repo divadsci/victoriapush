@@ -99,9 +99,14 @@ func (v *Vic) EnqueueDataPoint(dataPoint DataPoint) {
 func (v *Vic) dataPointToExpo(dataPoint DataPoint) string {
 	expoString := fmt.Sprintf("%s{", dataPoint.Metric)
 
-	//go through all labels and convert into labe="value", format
+	//go through all labels and convert into label="value", format
 	for label, data := range dataPoint.Labels {
 		expoString = expoString + fmt.Sprintf("%s=\"%s\",", label, data)
+	}
+
+	//go through all global labels and convert into globalLabel="value", format
+	for globalLabel, data := range v.globalLabels {
+		expoString = expoString + fmt.Sprintf("%s=\"%s\",", globalLabel, data)
 	}
 
 	//there will be an extra comma at the end. remove it pushing channel
